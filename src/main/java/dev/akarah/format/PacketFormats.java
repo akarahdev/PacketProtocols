@@ -5,6 +5,7 @@ import org.javatuples.Quartet;
 import org.javatuples.Triplet;
 
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 public class PacketFormats {
@@ -221,6 +222,33 @@ public class PacketFormats {
         @Override
         public String generateJavaType() {
             return "Long";
+        }
+    }
+
+    public record StringFormat() implements PacketFormat<String> {
+        @Override
+        public String read(ByteBuffer buf) {
+            byte[] array = new byte[buf.getInt()];
+            for(int i = 0; i < array.length; i++)
+                array[i] = buf.get();
+            return new String(array, StandardCharsets.UTF_8);
+        }
+
+        @Override
+        public void write(ByteBuffer buf, String value) {
+            buf.putInt(value.length());
+            for(byte b : value.getBytes(StandardCharsets.UTF_8))
+                buf.put(b);
+        }
+
+        @Override
+        public int length(String value) {
+            return Integer.BYTES + value.getBytes(StandardCharsets.UTF_8).length;
+        }
+
+        @Override
+        public String generateJavaType() {
+            return "String";
         }
     }
 

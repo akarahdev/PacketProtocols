@@ -9,15 +9,11 @@ import org.javatuples.Triplet;
 import java.nio.ByteBuffer;
 import java.util.Optional;
 
-public class Packet<T> {
-    private Packet() {
-    }
-
+public class PacketSpecification<T> {
     int packetId;
-
     PacketFormat<T> innerType;
 
-    private Packet(int id, PacketFormat<T> innerType) {
+    private PacketSpecification(int id, PacketFormat<T> innerType) {
         this.innerType = innerType;
         this.packetId = id;
     }
@@ -54,39 +50,39 @@ public class Packet<T> {
         }
     }
 
-    public static Packet<?> ofId(int packetId) {
-        return new Packet<>(packetId, null);
+    public static PacketSpecification<?> ofId(int packetId) {
+        return new PacketSpecification<>(packetId, null);
     }
 
-    public<A> Packet<A> withArguments(
+    public<A> PacketSpecification<A> withArguments(
         PacketFormat<A> innerType
     ) {
-        return new Packet<A>(this.packetId, new PacketFormats.NewProtocol<>(innerType));
+        return new PacketSpecification<A>(this.packetId, new PacketFormats.NewProtocol<>(innerType));
     }
 
-    public <A, B> Packet<Pair<A, B>> withArguments(
+    public <A, B> PacketSpecification<Pair<A, B>> withArguments(
         PacketFormat<A> first,
         PacketFormat<B> second
     ) {
-        return new Packet<>(this.packetId, new PacketFormats.NewProtocol<>(new PacketFormats.PairFormat<>(first, second)));
+        return new PacketSpecification<>(this.packetId, new PacketFormats.NewProtocol<>(new PacketFormats.PairFormat<>(first, second)));
     }
 
-    public <A, B, C> Packet<Triplet<A, B, C>> withArguments(
+    public <A, B, C> PacketSpecification<Triplet<A, B, C>> withArguments(
         PacketFormat<A> first,
         PacketFormat<B> second,
         PacketFormat<C> third
     ) {
-        return new Packet<>(this.packetId, new PacketFormats.NewProtocol<>(
+        return new PacketSpecification<>(this.packetId, new PacketFormats.NewProtocol<>(
             new PacketFormats.TripletFormat<>(first, second, third)));
     }
 
-    public<A, B, C, D> Packet<Quartet<A, B, C, D>> withArguments(
+    public<A, B, C, D> PacketSpecification<Quartet<A, B, C, D>> withArguments(
         PacketFormat<A> first,
         PacketFormat<B> second,
         PacketFormat<C> third,
         PacketFormat<D> fourth
     ) {
-        return new Packet<>(this.packetId, new PacketFormats.NewProtocol<>(
+        return new PacketSpecification<>(this.packetId, new PacketFormats.NewProtocol<>(
             new PacketFormats.QuartetFormat<>(first, second, third, fourth)));
     }
 

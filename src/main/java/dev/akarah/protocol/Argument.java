@@ -6,6 +6,7 @@ import org.javatuples.Pair;
 import org.javatuples.Triplet;
 
 import java.util.Optional;
+import java.util.function.Function;
 
 public class Argument {
     public static PacketFormat<Byte> singleByte() {
@@ -18,6 +19,10 @@ public class Argument {
 
     public static PacketFormat<Long> varInt() {
         return new PacketFormats.VariableSizedInteger();
+    }
+
+    public static PacketFormat<String> string() {
+        return new PacketFormats.StringFormat();
     }
 
     public static<T> PacketFormat<T[]> arrayOf(PacketFormat<T> inner) {
