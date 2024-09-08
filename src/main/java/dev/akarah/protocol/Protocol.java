@@ -2,6 +2,7 @@ package dev.akarah.protocol;
 
 import dev.akarah.format.Packet;
 
+import java.nio.ByteBuffer;
 import java.util.HashMap;
 
 /**
@@ -9,6 +10,7 @@ import java.util.HashMap;
  */
 public class Protocol {
     private final HashMap<Integer, Packet<?, ? extends Packet<?, ?>>> packets = new HashMap<>();
+
     private int protocolVersion = 0;
 
     private Protocol() {
@@ -53,5 +55,14 @@ public class Protocol {
 
         this.packets.put(packet.specification().getPacketId(), packet);
         return this;
+    }
+
+    public Packet<?, ?> getPacketDefaultFromId(int id) {
+        return this.packets.get(id);
+    }
+
+    public Packet<?, ?> readPacket(int id, ByteBuffer buffer) {
+        var pkt = this.packets.get(id);
+        return pkt.fromDataObject(pkt.specification().decode(buffer));
     }
 }

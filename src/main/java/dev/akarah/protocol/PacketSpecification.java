@@ -26,30 +26,38 @@ public class PacketSpecification<T> {
         return this.packetId;
     }
 
+    /**
+     * @return An automatically generated Java-friendly type signature for the packets' internal representation.
+     */
     public String javaTypeSignature() {
         return this.innerType.generateJavaType();
     }
 
+    /**
+     * Encodes the provided data into a ByteBuffer following this specification.
+     * @param value The data to encode
+     * @return The data encoded into bytes
+     */
     public ByteBuffer encode(T value) {
         var buf = ByteBuffer.allocate(this.innerType.length(value));
         this.innerType.write(buf, value);
         return buf;
     }
 
+    /**
+     * Decodes data from a ByteBuffer following this specification.
+     * @param buffer The buffer to decode from.
+     * @return The decoded data.
+     */
     public T decode(ByteBuffer buffer) {
         return this.innerType.read(buffer);
     }
 
-    public Optional<T> tryDecode(ByteBuffer buffer) {
-        var pos = buffer.position();
-        try {
-            return Optional.of(this.innerType.read(buffer));
-        } catch (Exception e) {
-            buffer.position(pos);
-            return Optional.empty();
-        }
-    }
-
+    /**
+     * Generates a new empty Packet Specification with a Packet ID.
+     * @param packetId The ID of the packet.
+     * @return The new empty packet specification.
+     */
     public static PacketSpecification<?> ofId(int packetId) {
         return new PacketSpecification<>(packetId, null);
     }

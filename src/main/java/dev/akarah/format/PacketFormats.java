@@ -236,7 +236,7 @@ public class PacketFormats {
 
         @Override
         public void write(ByteBuffer buf, String value) {
-            buf.putInt(value.length());
+            buf.putInt(value.getBytes(StandardCharsets.UTF_8).length);
             for(byte b : value.getBytes(StandardCharsets.UTF_8))
                 buf.put(b);
         }

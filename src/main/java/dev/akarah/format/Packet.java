@@ -1,6 +1,7 @@
 package dev.akarah.format;
 
 import dev.akarah.protocol.PacketSpecification;
+import dev.akarah.protocol.Protocol;
 
 /**
  * An abstract class representing a specification and proper data representation of a packet.
@@ -24,4 +25,8 @@ public abstract class Packet<T, Self> {
      * @return The packet converted to the internal data format.
      */
     public abstract T toFormat();
+
+    public Self fromDataObject(Object formattedData) {
+        return this.fromData((T) formattedData);
+    }
 }

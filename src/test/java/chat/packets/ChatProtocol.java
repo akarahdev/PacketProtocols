@@ -1,6 +1,5 @@
-package chat.targets;
+package chat.packets;
 
-import chat.packets.ChatMessagePacket;
 import dev.akarah.protocol.Protocol;
 
 public class ChatProtocol {
