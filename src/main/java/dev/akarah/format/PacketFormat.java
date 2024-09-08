@@ -1,5 +1,7 @@
 package dev.akarah.format;
 
+import dev.akarah.util.UnsafeFunction;
+
 import java.nio.ByteBuffer;
 
 public interface PacketFormat<T> {
@@ -12,10 +14,12 @@ public interface PacketFormat<T> {
         return this;
     }
 
+    @UnsafeFunction
     default int lengthFromObject(Object value) {
         return this.length((T) value);
     }
 
+    @UnsafeFunction
     default void writeFromObject(ByteBuffer stream, Object value) {
         this.write(stream, (T) value);
     }
